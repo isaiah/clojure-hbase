@@ -16,10 +16,7 @@
 (def ^{:private true}
   scan-class (Class/forName "org.apache.hadoop.hbase.client.Scan"))
 
-;; This holds the HTablePool reference for all users. Users never have to see
-;; this, and the HBase API does not appear to me to allow configuration in code
-;; nor the use of multiple databases simultaneously (configuration is driven by
-;; the XML config files). So we just hide this detail from the user.
+;; This holds the HTablePool reference for all users.
 (def ^{:tag HTablePool :dynamic true :private true} *db* (atom nil))
 
 (defn- ^HTablePool htable-pool
@@ -27,6 +24,11 @@
   (if-let [pool @*db*]
     pool
     (swap! *db* (fn [_] (HTablePool.)))))
+
+(defn set-htable-pool!
+  [htable-pool]
+  "Customize the HTablePool"
+  (reset! *db* htable-pool))
 
 (defmulti to-bytes-impl
   "Converts its argument into an array of bytes. By default, uses HBase's
