@@ -151,6 +151,12 @@ is a vector of the form just mentioned:
 			           (hb/as-vector (hb/get users "testrow" :column [:account :c1]) :map-family #(keyword (Bytes/toString %)) :map-qualifier #(keyword (Bytes/toString %)) :map-timestamp #(java.util.Date. %) :map-value #(Bytes/toString %) str))
       [[:account :c1 #<Date Sat Feb 13 03:40:48 CST 2010> "test"]]
 
+To connect to remote zookeeper quorum:
+
+    (let [conf (HBaseConfiguration/create)]
+      (.set conf "hbase.zookeeper.quorum" "remote-host")
+      (hb/set-htable-pool! (HTablePool. conf 10)))
+
 ## Status
 
 Basic unit tests passing. No known bugs. Bug reports and input welcome.
