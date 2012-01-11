@@ -26,7 +26,7 @@
     (swap! *db* (fn [_] (HTablePool.)))))
 
 (defn set-htable-pool!
-  [htable-pool]
+  [^HTablePool htable-pool]
   "Customize the HTablePool"
   (reset! *db* htable-pool))
 

@@ -14,6 +14,11 @@
   (or @*admin*
       (swap! *admin* (fn [_] (HBaseAdmin. (HBaseConfiguration/create))))))
 
+(defn swap-admin! [host]
+  (let [conf (HBaseConfiguration/create)]
+    (. conf set "hbase.zookeeper.quorum" host)
+    (swap! *admin* (fn [_] (HBaseAdmin. conf)))))
+
 ;;
 ;; HColumnDescriptor
 ;;
